@@ -5,17 +5,15 @@ def calculate_demographic_data(print_data=True):
     # Read data from file
     df = pd.read_csv('adult.data.csv')
 
-    # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
+    # How many of each race are represented in this dataset? This should be a Pandas series with race names as the
+    # index labels.
     race_count = df['race'].value_counts()
 
     # What is the average age of men?
-    age_series = df['age']
-    men_series = df['sex'] == 'Male'
-    average_age_men = round(age_series[men_series].mean(), 1)
+    average_age_men = round(df.loc[df['sex'] == 'Male', 'age'].mean(), 1)
 
     # What is the percentage of people who have a Bachelor's degree?
-    education_bachelors = df[df['education'] == 'Bachelors']
-    percentage_bachelors = round(100*len(education_bachelors)/len(df), 1)
+    percentage_bachelors = round(100*len(df.loc[df['education'] == 'Bachelors'])/len(df), 1)
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # What percentage of people without advanced education make more than 50K?
@@ -32,12 +30,12 @@ def calculate_demographic_data(print_data=True):
     min_work_hours = df['hours-per-week'].min()
 
     # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
-    min_work_hours_mask = df[df['hours-per-week'] == min_work_hours]
-    num_min_workers = len(min_work_hours_mask)
+    min_workers = df[df['hours-per-week'] == min_work_hours]
 
-    rich_percentage = round(100*len(df[(df['hours-per-week'] == min_work_hours) & (df['salary'] == '>50K')])/num_min_workers, 1)
+    rich_percentage = round(100*len(min_workers[min_workers['salary'] == ">50K"])/len(min_workers),1)
 
     # What country has the highest percentage of people that earn >50K?
+
     highest_earning_country = (df.loc[df['salary'] == ">50K", 'native-country'].value_counts() / df['native-country'].value_counts()).fillna(0).sort_values(ascending=False).index[0]
     highest_earning_country_percentage = round(100*len(df[(df['native-country'] == highest_earning_country) & (df['salary'] == '>50K')]) / len(df[df['native-country'] == highest_earning_country]), 1)
 
@@ -68,6 +66,6 @@ def calculate_demographic_data(print_data=True):
         'rich_percentage': rich_percentage,
         'highest_earning_country': highest_earning_country,
         'highest_earning_country_percentage':
-            highest_earning_country_percentage,
+        highest_earning_country_percentage,
         'top_IN_occupation': top_IN_occupation
     }
