@@ -27,6 +27,7 @@ def draw_line_plot():
     fig.savefig('line_plot.png')
     return fig
 
+
 def draw_bar_plot():
     # Copy and modify data for monthly bar plot
     df_bar = df.copy()
@@ -41,15 +42,17 @@ def draw_bar_plot():
     fig = df_bar.plot(kind="bar", legend=True).figure
     plt.xlabel("Years")
     plt.ylabel("Average Page Views")
-    plt.legend(fontsize=10, title="Months",
+    plt.legend(title="Months",
                labels=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                        'November', 'December'])
-    plt.show()
+    #plt.show()
 
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
     return fig
 
+
+# Inspired by https://www.kaggle.com/benthecoder/fcc-time-series-visualization
 def draw_box_plot():
     # Prepare data for box plots (this part is done!)
     df_box = df.copy()
@@ -57,11 +60,23 @@ def draw_box_plot():
     df_box['year'] = [d.year for d in df_box.date]
     df_box['month'] = [d.strftime('%b') for d in df_box.date]
 
+    df_box["month_num"] = df_box["date"].dt.month
+    df_box = df_box.sort_values("month_num")
+
     # Draw box plots (using Seaborn)
+    fig, (ax1, ax2) = plt.subplots(1,2)
 
+    ax1 = sns.boxplot(x=df_box["year"], y=df_box["value"], ax=ax1)
+    ax1.set_title("Year-wise Box Plot (Trend)")
+    ax1.set_xlabel('Year')
+    ax1.set_ylabel('Page Views')
 
+    ax2 = sns.boxplot(x=df_box["month"], y=df_box["value"], ax=ax2)
+    ax2.set_title("Month-wise Box Plot (Seasonality)")
+    ax2.set_xlabel('Month')
+    ax2.set_ylabel('Page Views')
 
-
+    #plt.show()
 
     # Save image and return fig (don't change this part)
     fig.savefig('box_plot.png')
