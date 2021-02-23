@@ -21,7 +21,7 @@ def draw_line_plot():
     plt.ylabel('Page Views')
     plt.title('Daily freeCodeCamp Forum Page Views 5/2016-12/2019')
 
-    plt.show()
+    # plt.show()
 
     # Save image and return fig (don't change this part)
     fig.savefig('line_plot.png')
@@ -29,13 +29,22 @@ def draw_line_plot():
 
 def draw_bar_plot():
     # Copy and modify data for monthly bar plot
-    df_bar = None
+    df_bar = df.copy()
+    df['month'] = df.index.month
+    df['year'] = df.index.year
+
+    # Average page views
+    df_bar = df.groupby(['year', 'month'])['value'].mean()
+    df_bar = df_bar.unstack()
 
     # Draw bar plot
-
-
-
-
+    fig = df_bar.plot(kind="bar", legend=True).figure
+    plt.xlabel("Years")
+    plt.ylabel("Average Page Views")
+    plt.legend(fontsize=10, title="Months",
+               labels=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+                       'November', 'December'])
+    plt.show()
 
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
