@@ -16,10 +16,11 @@ df = df[
 
 def draw_line_plot():
     # Draw line plot
-    fig = plt.plot(df.index, df['value'], color='red', linewidth=1)
-    plt.xlabel('Date')
-    plt.ylabel('Page Views')
-    plt.title('Daily freeCodeCamp Forum Page Views 5/2016-12/2019')
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.plot(df.index, df['value'], color='red', linewidth=1)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Page Views')
+    ax.set_title('Daily freeCodeCamp Forum Page Views 5/2016-12/2019')
 
     # plt.show()
 
