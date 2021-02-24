@@ -21,8 +21,6 @@ def draw_line_plot():
     plt.xlabel('Date')
     plt.ylabel('Page Views')
 
-    # plt.show()
-
     # Save image and return fig (don't change this part)
     fig.savefig('line_plot.png')
     return fig
@@ -36,19 +34,18 @@ def draw_bar_plot():
     df_bar['year'] = df.index.year
 
     # Grouping identical values from year and month
-    df_bar = df_bar.groupby(['month', 'year']).mean()
+    df_bar = df_bar.groupby(['month', 'year'])['value'].mean()
 
     # Unstacking the dataframe month (index) year (columns)
     df_bar = df_bar.unstack()
 
     # Draw bar plot
-    fig = df_bar.plot(kind="bar", legend=True, figsize=(15,5)).figure
+    fig = (df_bar).transpose().plot(kind='bar', legend=True, figsize=(15,10)).figure
     plt.xlabel("Years")
     plt.ylabel("Average Page Views")
     plt.legend(title="Months",
                labels=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                        'November', 'December'])
-    #plt.show()
 
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
