@@ -31,15 +31,18 @@ def draw_line_plot():
 def draw_bar_plot():
     # Copy and modify data for monthly bar plot
     df_bar = df.copy()
-    df['month'] = df.index.month
-    df['year'] = df.index.year
+    # Adding new columns from date
+    df_bar['month'] = df.index.month
+    df_bar['year'] = df.index.year
 
-    # Average page views
-    df_bar = df.groupby(['year', 'month'])['value'].mean()
+    # Grouping identical values from year and month
+    df_bar = df_bar.groupby(['month', 'year']).mean()
+
+    # Unstacking the dataframe month (index) year (columns)
     df_bar = df_bar.unstack()
 
     # Draw bar plot
-    fig = df_bar.plot(kind="bar", legend=True).figure
+    fig = df_bar.plot(kind="bar", legend=True, figsize=(15,5)).figure
     plt.xlabel("Years")
     plt.ylabel("Average Page Views")
     plt.legend(title="Months",
