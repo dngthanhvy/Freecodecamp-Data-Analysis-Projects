@@ -66,7 +66,8 @@ def draw_box_plot():
 
     # Draw box plots (using Seaborn)
     fig, (ax1, ax2) = plt.subplots(1,2)
-
+    fig.set_figwidth(20)
+    fig.set_figheight(10)
     ax1 = sns.boxplot(x=df_box["year"], y=df_box["value"], ax=ax1)
     ax1.set_title("Year-wise Box Plot (Trend)")
     ax1.set_xlabel('Year')
