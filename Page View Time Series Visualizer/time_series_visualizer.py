@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import calendar
 import pandas as pd
 import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
@@ -52,15 +53,15 @@ def draw_bar_plot():
     return fig
 
 
-# Inspired by https://www.kaggle.com/benthecoder/fcc-time-series-visualization
 def draw_box_plot():
     # Prepare data for box plots (this part is done!)
     df_box = df.copy()
     df_box.reset_index(inplace=True)
-    df_box['year'] = [d.year for d in df_box.date]
-    df_box['month'] = [d.strftime('%b') for d in df_box.date]
 
-    df_box["month_num"] = df_box["date"].dt.month
+    df_box['year'] = df.index.year
+    df_box["month_num"] = df.index.month
+    df_box['month'] = df_box['month_num'].apply(lambda x: calendar.month_abbr[x])
+
     df_box = df_box.sort_values("month_num")
 
     # Draw box plots (using Seaborn)
